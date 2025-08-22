@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carian Data Pelajar 2025 - SK Kampung Selamat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #FFD700 0%, #FFC107 25%, #FF8F00 50%, #E65100 75%, #BF360C 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .sports-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .floating-sports {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body class="sports-pattern min-h-screen">
+    <!-- Floating Sports Icons -->
+    <div class="floating-sports" style="top: 10%; left: 5%; animation-delay: 0s;">⚽</div>
+    <div class="floating-sports" style="top: 20%; right: 10%; animation-delay: 1s;">🏀</div>
+    <div class="floating-sports" style="top: 60%; left: 8%; animation-delay: 2s;">🏐</div>
+    <div class="floating-sports" style="top: 70%; right: 15%; animation-delay: 3s;">🏸</div>
+    <div class="floating-sports" style="top: 40%; left: 85%; animation-delay: 4s;">🏓</div>
+    <div class="floating-sports" style="top: 80%; left: 20%; animation-delay: 5s;">🏃‍♂️</div>
+
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="flex flex-col items-center mb-6">
+                <img 
+                    src="https://i.postimg.cc/MZrs0pRF/LENCANA-SEK-2024-removebg-preview.png" 
+                    alt="Logo SK Kampung Selamat"
+                    class="w-24 h-24 mb-4 drop-shadow-lg"
+                    onerror="this.style.display='none';"
+                >
+                <h1 class="text-4xl font-bold text-gray-800 mb-2 drop-shadow-lg">SK KAMPUNG SELAMAT</h1>
+                <p class="text-xl font-semibold text-orange-600 mb-4 drop-shadow-md">"PAMER DIRI UNGGUL PADU"</p>
+                <h2 class="text-2xl font-semibold text-white mb-4 bg-blue-600 bg-opacity-90 px-6 py-2 rounded-full">Sistem Carian Data Pelajar 2025</h2>
+                <p class="text-gray-700 drop-shadow-md font-medium">Masukkan nama pelajar untuk mencari maklumat</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-xl p-2 border border-white border-opacity-20">
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <button 
+                        id="searchTab" 
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg transition-all duration-300"
+                    >
+                        <span>🔍 Carian Pelajar</span>
+                    </button>
+                    <button 
+                        id="analyticsTab" 
+                        class="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg hover:bg-gray-300 transition-all duration-300"
+                    >
+                        <span>📊 Analisis Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Page -->
+        <div id="searchPage">
+            <!-- Search Section -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-xl p-6 border border-white border-opacity-20">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Taip nama pelajar di sini..."
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-lg bg-white bg-opacity-90"
+                            >
+                        </div>
+                        <button 
+                            id="searchBtn" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium flex items-center justify-center gap-2 shadow-lg"
+                        >
+                            <span>🔍 Cari</span>
+                            <div id="loadingSpinner" class="loading-spinner hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="analyticsPage" class="hidden">
+            <!-- Analytics Section -->
+            <div class="max-w-6xl mx-auto mb-8">
+                <div class="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-xl p-6 border border-white border-opacity-20">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">📊 Analisis Data Pelajar</h3>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Unit Analysis -->
+                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-blue-800 mb-4 text-center">🏢 Analisis Unit</h4>
+                            <div id="unitChart" class="space-y-2"></div>
+                        </div>
+                        
+                        <!-- Kelab Analysis -->
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-green-800 mb-4 text-center">🎭 Analisis Kelab</h4>
+                            <div id="kelabChart" class="space-y-2"></div>
+                        </div>
+                        
+                        <!-- Sukan Analysis -->
+                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-orange-800 mb-4 text-center">⚽ Analisis Sukan</h4>
+                            <div id="sukanChart" class="space-y-2"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Stats -->
+                    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold" id="totalStudents">0</div>
+                            <div class="text-sm">Jumlah Pelajar</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold" id="totalUnits">0</div>
+                            <div class="text-sm">Jumlah Unit</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold" id="totalKelabs">0</div>
+                            <div class="text-sm">Jumlah Kelab</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold" id="totalSukans">0</div>
+                            <div class="text-sm">Jumlah Sukan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 drop-shadow-md">Hasil Carian:</h3>
+                <div id="resultsContainer" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-8">
+            <div class="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-xl p-8 max-w-md mx-auto border border-white border-opacity-20">
+                <div class="text-6xl mb-4">😔</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Nama tidak dijumpai</h3>
+                <p class="text-gray-600">Cuba cari dengan nama lain atau periksa ejaan nama.</p>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden text-center py-8">
+            <div class="bg-red-50 bg-opacity-95 backdrop-blur-sm border border-red-200 rounded-lg shadow-xl p-8 max-w-md mx-auto">
+                <div class="text-4xl mb-4">⚠️</div>
+                <h3 class="text-xl font-semibold text-red-800 mb-2">Ralat Memuat Data</h3>
+                <p class="text-red-600">Tidak dapat memuat data pelajar. Sila cuba lagi.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 bg-opacity-90 backdrop-blur-sm text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col items-center space-y-2">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">💻</span>
+                    <p class="text-lg font-medium">Created by <span class="text-yellow-400 font-bold">FATRANY69</span></p>
+                </div>
+                <p class="text-sm text-gray-300">Sistem Carian Data Pelajar SK Kampung Selamat 2025</p>
+                <div class="flex space-x-4 text-2xl mt-4">
+                    <span>🏆</span>
+                    <span>⚽</span>
+                    <span>🏀</span>
+                    <span>🏐</span>
+                    <span>🏸</span>
+                    <span>🏓</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let studentsData = [];
+        let isDataLoaded = false;
+
+        // Load CSV data when page loads
+        async function loadStudentData() {
+            try {
+                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQhZTDM20p6IpFcKDcz1gZxDN4kcDXVmHsRhO5LJMANfZGfJ8PLRGeXOddEKFSCUw/pub?output=csv');
+                const csvText = await response.text();
+                
+                // Parse CSV
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',').map(header => header.trim().replace(/"/g, ''));
+                
+                studentsData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim()) {
+                        const values = parseCSVLine(lines[i]);
+                        if (values.length >= headers.length) {
+                            const student = {};
+                            headers.forEach((header, index) => {
+                                student[header] = values[index] || '';
+                            });
+                            studentsData.push(student);
+                        }
+                    }
+                }
+                
+                isDataLoaded = true;
+                console.log(`Data loaded: ${studentsData.length} students`);
+                
+                // Generate analytics after data is loaded
+                generateAnalytics();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError();
+            }
+        }
+
+        // Generate analytics charts
+        function generateAnalytics() {
+            if (!isDataLoaded || studentsData.length === 0) return;
+
+            // Count data for each category
+            const unitCounts = {};
+            const kelabCounts = {};
+            const sukanCounts = {};
+
+            studentsData.forEach(student => {
+                // Count Units
+                const unit = student.UNIT?.trim();
+                if (unit && unit !== '') {
+                    unitCounts[unit] = (unitCounts[unit] || 0) + 1;
+                }
+
+                // Count Kelabs
+                const kelab = student.KELAB?.trim();
+                if (kelab && kelab !== '') {
+                    kelabCounts[kelab] = (kelabCounts[kelab] || 0) + 1;
+                }
+
+                // Count Sukans
+                const sukan = student.SUKAN?.trim();
+                if (sukan && sukan !== '') {
+                    sukanCounts[sukan] = (sukanCounts[sukan] || 0) + 1;
+                }
+            });
+
+            // Create charts
+            createBarChart('unitChart', unitCounts, 'blue');
+            createBarChart('kelabChart', kelabCounts, 'green');
+            createBarChart('sukanChart', sukanCounts, 'orange');
+
+            // Update summary stats
+            document.getElementById('totalStudents').textContent = studentsData.length;
+            document.getElementById('totalUnits').textContent = Object.keys(unitCounts).length;
+            document.getElementById('totalKelabs').textContent = Object.keys(kelabCounts).length;
+            document.getElementById('totalSukans').textContent = Object.keys(sukanCounts).length;
+        }
+
+        // Create bar chart
+        function createBarChart(containerId, data, color) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (Object.keys(data).length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center">Tiada data tersedia</p>';
+                return;
+            }
+
+            // Sort data by count (descending)
+            const sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]);
+            const maxCount = Math.max(...Object.values(data));
+
+            // Color schemes
+            const colorSchemes = {
+                blue: ['bg-blue-200', 'bg-blue-400', 'bg-blue-600', 'text-blue-800'],
+                green: ['bg-green-200', 'bg-green-400', 'bg-green-600', 'text-green-800'],
+                orange: ['bg-orange-200', 'bg-orange-400', 'bg-orange-600', 'text-orange-800']
+            };
+
+            const colors = colorSchemes[color] || colorSchemes.blue;
+
+            sortedData.forEach(([label, count], index) => {
+                const percentage = (count / maxCount) * 100;
+                const colorIntensity = index < 3 ? colors[2] : (index < 6 ? colors[1] : colors[0]);
+
+                const barElement = document.createElement('div');
+                barElement.className = 'mb-3';
+                barElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium ${colors[3]} truncate" title="${label}">${label}</span>
+                        <span class="text-sm font-bold ${colors[3]}">${count}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="${colorIntensity} h-3 rounded-full transition-all duration-1000 ease-out" 
+                             style="width: ${percentage}%"></div>
+                    </div>
+                `;
+                container.appendChild(barElement);
+            });
+        }
+
+        // Parse CSV line handling commas within quotes
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result.map(item => item.replace(/"/g, ''));
+        }
+
+        // Search function
+        function searchStudents(searchTerm) {
+            if (!isDataLoaded) {
+                showError();
+                return [];
+            }
+
+            const term = searchTerm.toLowerCase().trim();
+            if (!term) return [];
+
+            return studentsData.filter(student => {
+                const nama = (student.NAMA || '').toLowerCase();
+                return nama.includes(term);
+            });
+        }
+
+        // Display results
+        function displayResults(results) {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '';
+
+            results.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-xl p-6 border-l-4 border-gradient-to-b from-blue-500 to-purple-500 border border-white border-opacity-20';
+                
+                card.innerHTML = `
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Photo Section -->
+                        <div class="flex-shrink-0">
+                            ${student.GAMBAR && student.GAMBAR.trim() ? `
+                                <div class="w-32 h-40 mx-auto lg:mx-0">
+                                    <img 
+                                        src="${student.GAMBAR.trim()}" 
+                                        alt="Gambar ${student.NAMA || 'Pelajar'}"
+                                        class="w-full h-full object-cover rounded-lg border-2 border-gray-200 shadow-lg"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                    >
+                                    <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg border-2 border-gray-200 shadow-lg hidden items-center justify-center flex-col">
+                                        <div class="text-4xl mb-2">👤</div>
+                                        <span class="text-xs text-gray-500 text-center px-2">Gambar tidak dapat dipaparkan</span>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div class="w-32 h-40 mx-auto lg:mx-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg border-2 border-gray-200 shadow-lg flex items-center justify-center flex-col">
+                                    <div class="text-4xl mb-2">👤</div>
+                                    <span class="text-xs text-gray-500 text-center px-2">Tiada Gambar</span>
+                                </div>
+                            `}
+                        </div>
+                        
+                        <!-- Information Section -->
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Nama:</span>
+                                    <p class="text-lg font-semibold text-gray-800">${student.NAMA || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">No. KP:</span>
+                                    <p class="text-gray-700">${student['NO KP'] || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Jantina:</span>
+                                    <p class="text-gray-700">${student.JANTINA || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Tahun/Tingkatan:</span>
+                                    <p class="text-gray-700">${student['TAHUN/TINGKATAN'] || 'Tiada Data'}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Nama Kelas:</span>
+                                    <p class="text-gray-700">${student['NAMA KELAS'] || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Unit:</span>
+                                    <p class="text-gray-700">${student.UNIT || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Kelab:</span>
+                                    <p class="text-gray-700">${student.KELAB || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Sukan:</span>
+                                    <p class="text-gray-700">${student.SUKAN || 'Tiada Data'}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Pencapaian:</span>
+                                    <p class="text-gray-700">${student.PENCAPAIAN || 'Tiada Data'}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Sijil:</span>
+                                    <p class="text-gray-700">${student.SIJIL || 'Tiada Data'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Show/hide sections
+        function showResults() {
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        function showNoResults() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('noResults').classList.remove('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        function showError() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.remove('hidden');
+        }
+
+        function hideAllResults() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        // Show/hide loading spinner
+        function showLoading() {
+            document.getElementById('loadingSpinner').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingSpinner').classList.add('hidden');
+        }
+
+        // Perform search
+        async function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value;
+            
+            if (!searchTerm.trim()) {
+                hideAllResults();
+                return;
+            }
+
+            showLoading();
+
+            // If data not loaded yet, try to load it
+            if (!isDataLoaded) {
+                await loadStudentData();
+            }
+
+            const results = searchStudents(searchTerm);
+            
+            hideLoading();
+
+            if (results.length > 0) {
+                displayResults(results);
+                showResults();
+            } else {
+                showNoResults();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Real-time search as user types (with debounce)
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                if (this.value.trim().length >= 2) {
+                    performSearch();
+                } else if (this.value.trim().length === 0) {
+                    hideAllResults();
+                }
+            }, 300);
+        });
+
+        // Tab navigation functions
+        function showSearchPage() {
+            document.getElementById('searchPage').classList.remove('hidden');
+            document.getElementById('analyticsPage').classList.add('hidden');
+            
+            // Update tab styles
+            document.getElementById('searchTab').className = 'flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg transition-all duration-300';
+            document.getElementById('analyticsTab').className = 'flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg hover:bg-gray-300 transition-all duration-300';
+        }
+
+        function showAnalyticsPage() {
+            document.getElementById('searchPage').classList.add('hidden');
+            document.getElementById('analyticsPage').classList.remove('hidden');
+            
+            // Update tab styles
+            document.getElementById('searchTab').className = 'flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg hover:bg-gray-300 transition-all duration-300';
+            document.getElementById('analyticsTab').className = 'flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg transition-all duration-300';
+        }
+
+        // Tab event listeners
+        document.getElementById('searchTab').addEventListener('click', showSearchPage);
+        document.getElementById('analyticsTab').addEventListener('click', showAnalyticsPage);
+
+        // Load data when page loads
+        window.addEventListener('load', loadStudentData);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972ece3cc3343f5e',t:'MTc1NTgyODMzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
